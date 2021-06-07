@@ -5,12 +5,8 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "/usr/include/c++/11.1.0/",
-                "/usr/include/c++/11.1.0/backward",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include",
                 "/usr/lib/glib-2.0/include",
                 "/usr/local/include",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed",
                 "${workspaceFolder}/**",
                 "/home/eggy/Projects/JUCE/",
                 "/home/eggy/Projects/JUCE/modules/"

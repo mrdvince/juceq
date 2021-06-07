@@ -1,0 +1,2 @@
+rootProject.name = 'juceq'
+include ':app'

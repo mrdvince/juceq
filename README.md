@@ -1,1 +1,1 @@
-# juice_eq
+# Droid Juicer

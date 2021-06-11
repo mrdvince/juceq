@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/include",
+                "/usr/local/include",
+                "/usr/lib/glib-2.0/include",
+                "/usr/local/include",
+                "${workspaceFolder}/**",
+                "/home/eggy/Projects/JUCE/",
+                "/home/eggy/Projects/JUCE/modules/"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": "",
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "${workspaceFolder}/**",
+                    "/home/eggy/Projects/JUCE/",
+                    "/home/eggy/Projects/JUCE/modules/"
+                ]
+            },
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

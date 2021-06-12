@@ -1,6 +1,8 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_dsp/juce_dsp.h>
+#include <juce_core/juce_core.h>
 
 struct Parameters {
     void add(juce::AudioProcessor &processor) const {

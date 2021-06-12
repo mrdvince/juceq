@@ -84,14 +84,7 @@ void JuceqAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) 
     rightChain.prepare(spec);
 
     auto chainSettings = getChainSettings(apvts);
-    auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
-                                                                                chainSettings.peakFreq,
-                                                                                chainSettings.peakQuality,
-                                                                                juce::Decibels::decibelsToGain(
-                                                                                        chainSettings.peakGainInDecibels));
-    *leftChain.get<ChainPositions::Peak>().coefficients = *peakCoefficients;
-    *rightChain.get<ChainPositions::Peak>().coefficients = *peakCoefficients;
-
+    updatePeakFilter(chainSettings);
     auto cutCoefficients = juce::dsp::FilterDesign<float>::designIIRHighpassHighOrderButterworthMethod(
             chainSettings.lowCutFreq,
             sampleRate,
@@ -226,14 +219,7 @@ void JuceqAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::M
 
 
     auto chainSettings = getChainSettings(apvts);
-    auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(),
-                                                                                chainSettings.peakFreq,
-                                                                                chainSettings.peakQuality,
-                                                                                juce::Decibels::decibelsToGain(
-                                                                                        chainSettings.peakGainInDecibels));
-    *leftChain.get<ChainPositions::Peak>().coefficients = *peakCoefficients;
-    *rightChain.get<ChainPositions::Peak>().coefficients = *peakCoefficients;
-
+    updatePeakFilter(chainSettings);
 
     auto cutCoefficients = juce::dsp::FilterDesign<float>::designIIRHighpassHighOrderButterworthMethod(
             chainSettings.lowCutFreq,
@@ -275,7 +261,6 @@ void JuceqAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::M
             leftLowCut.setBypassed<2>(false);
             *leftLowCut.get<3>().coefficients = *cutCoefficients[3];
             leftLowCut.setBypassed<3>(false);
-
             break;
 
     }
@@ -328,8 +313,6 @@ void JuceqAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::M
     juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
     leftChain.process(leftContext);
     rightChain.process(rightContext);
-
-
 }
 
 bool JuceqAudioProcessor::hasEditor() const {
@@ -362,6 +345,20 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState &apvts) {
     settings.lowCutSlope = static_cast<Slope>(apvts.getRawParameterValue("LowCut Slope")->load());
     settings.highCutSlope = static_cast<Slope>(apvts.getRawParameterValue("HighCut Slope")->load());
     return settings;
+}
+
+void JuceqAudioProcessor::updatePeakFilter(const ChainSettings &chainSettings) {
+    auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(),
+                                                                                chainSettings.peakFreq,
+                                                                                chainSettings.peakQuality,
+                                                                                juce::Decibels::decibelsToGain(
+                                                                                        chainSettings.peakGainInDecibels));
+    updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+    updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+}
+
+void JuceqAudioProcessor::updateCoefficients(Coefficients &old, const Coefficients &replacements) {
+    *old = *replacements;
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout JuceqAudioProcessor::createParameterLayout() {
@@ -398,7 +395,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout JuceqAudioProcessor::createP
         str << " db/Oct";
         stringArray.add(str);
     }
-
     layout.add(std::make_unique<juce::AudioParameterChoice>("LowCut Slope", "LowCut Slope", stringArray, 0));
     layout.add(std::make_unique<juce::AudioParameterChoice>("HighCut Slope", "HighCut Slope", stringArray, 0));
     return layout;

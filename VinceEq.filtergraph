@@ -61,10 +61,10 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <FILTER uid="9" x="0.65625" y="0.3951612903225806">
-    <PLUGIN name="VinceEq" format="VST3" category="Fx" manufacturer="DroidCo"
-            version="0.0.1" file="C:\Program Files\Common Files\VST3\VinceEq.vst3\Contents\x86_64-win\VinceEq.vst3"
-            uniqueId="970487f5" isInstrument="0" fileTime="17a018d87a9" infoUpdateTime="17a019024e2"
+  <FILTER uid="10" x="0.55" y="0.5142276422764228">
+    <PLUGIN name="Juce EQ" format="VST3" category="Fx" manufacturer="DroidCo"
+            version="0.0.1" file="C:\Program Files\Common Files\VST3\Juce EQ.vst3\Contents\x86_64-win\Juce EQ.vst3"
+            uniqueId="970487f5" isInstrument="0" fileTime="17a0a44cd03" infoUpdateTime="17a0a4d4f2b"
             numInputs="2" numOutputs="2" isShell="0" uid="c0053e5b"/>
     <STATE>191.VMjLgXK....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
     <LAYOUT>
@@ -76,8 +76,8 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <CONNECTION srcFilter="1" srcChannel="0" dstFilter="9" dstChannel="0"/>
-  <CONNECTION srcFilter="1" srcChannel="1" dstFilter="9" dstChannel="1"/>
-  <CONNECTION srcFilter="9" srcChannel="0" dstFilter="3" dstChannel="0"/>
-  <CONNECTION srcFilter="9" srcChannel="1" dstFilter="3" dstChannel="1"/>
+  <CONNECTION srcFilter="1" srcChannel="0" dstFilter="10" dstChannel="0"/>
+  <CONNECTION srcFilter="1" srcChannel="1" dstFilter="10" dstChannel="1"/>
+  <CONNECTION srcFilter="10" srcChannel="0" dstFilter="3" dstChannel="0"/>
+  <CONNECTION srcFilter="10" srcChannel="1" dstFilter="3" dstChannel="1"/>
 </FILTERGRAPH>

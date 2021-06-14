@@ -16,7 +16,7 @@ juce_add_plugin("${BaseTargetName}"
         PLUGIN_MANUFACTURER_CODE Juce
         PLUGIN_CODE Dem0
         FORMATS AU VST3 Standalone
-        PRODUCT_NAME "VinceEq")
+        PRODUCT_NAME "Juce EQ")
 
 target_sources(${BaseTargetName} PRIVATE
         Source/PluginProcessor.cpp

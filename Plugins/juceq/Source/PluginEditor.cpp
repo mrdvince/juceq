@@ -15,17 +15,26 @@ JuceqAudioProcessorEditor::JuceqAudioProcessorEditor(JuceqAudioProcessor &p)
     for (auto *comp : getComps()) {
         addAndMakeVisible(comp);
     }
+
+    const auto &params = audioProcessor.getParameters();
+    for (auto param:params) {
+        param->addListener(this);
+    }
+    startTimerHz(60);
     setSize(600, 300);
 }
 
 JuceqAudioProcessorEditor::~JuceqAudioProcessorEditor() {
+    const auto &params = audioProcessor.getParameters();
+    for (auto param:params) {
+        param->removeListener(this);
+    }
 }
 
 void JuceqAudioProcessorEditor::paint(juce::Graphics &g) {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     using namespace juce;
 
-    g.fillAll(Colours::black);
     auto bounds = getLocalBounds();
     auto responseArea = bounds.removeFromTop(bounds.getHeight() * 0.33);
 
@@ -41,6 +50,7 @@ void JuceqAudioProcessorEditor::paint(juce::Graphics &g) {
     for (int i = 0; i < w; ++i) {
         double mag = 1.f;
         auto freq = mapToLog10(double(i) / double(w), 20.0, 20000.0);
+        g.fillAll(Colours::black);
         if (!monoChain.isBypassed<ChainPositions::Peak>())
             mag *= peak.coefficients->getMagnitudeForFrequency(freq, sampleRate);
         if (!lowcut.isBypassed<0>())
@@ -63,6 +73,7 @@ void JuceqAudioProcessorEditor::paint(juce::Graphics &g) {
         mags[i] = Decibels::gainToDecibels(mag);
     }
     Path responseCurve;
+//    responseCurve.clear();
 
     const double outputMin = responseArea.getBottom();
     const double outputMax = responseArea.getY();
@@ -72,10 +83,10 @@ void JuceqAudioProcessorEditor::paint(juce::Graphics &g) {
 
     responseCurve.startNewSubPath(responseArea.getX(), map(mags.front()));
 
-    for (size_t i = 0; i < mags.size(); ++i) {
-        responseCurve.lineTo(responseArea.getX() + 1, map(mags[i]));
+    for (size_t i = 1; i < mags.size(); ++i) {
+        responseCurve.lineTo(responseArea.getX() + i, map(mags[i]));
     }
-    g.setColour(Colours::orange);
+    g.setColour(Colours::white);
     g.drawRoundedRectangle(responseArea.toFloat(), 4.f, 1.f);
 
     g.setColour(Colours::white);
@@ -107,11 +118,20 @@ void JuceqAudioProcessorEditor::parameterValueChanged(int parameterIndex, float 
 }
 
 void JuceqAudioProcessorEditor::timerCallback() {
-    if (parametersChanged.compareAndSetBool(false, true)) {}
+    if (parametersChanged.compareAndSetBool(false, true)) {
+        // Update monochain
+        auto chainSettings = getChainSettings(audioProcessor.apvts);
+        auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
+        updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+        // Repaint
+        repaint();
+    }
 }
+
 void JuceqAudioProcessorEditor::parameterGestureChanged(int parameterIndex, bool gestureIsStarting) {
 
 }
+
 std::vector<juce::Component *> JuceqAudioProcessorEditor::getComps() {
     return {
             &peakFreqSlider,

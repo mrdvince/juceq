@@ -1,34 +1,18 @@
-// {
-//     "configurations": [
-//         {
-//             "name": "Linux",
-//             "includePath": [
-//                 "/usr/include",
-//                 "/usr/local/include",
-//                 "/usr/lib/glib-2.0/include",
-//                 "/usr/local/include",
-//                 "${workspaceFolder}/**",
-//                 "/home/eggy/Projects/JUCE/",
-//                 "/home/eggy/Projects/JUCE/modules/"
-//             ],
-//             "browse": {
-//                 "limitSymbolsToIncludedHeaders": true,
-//                 "databaseFilename": "",
-//                 "path": [
-//                     "/usr/include",
-//                     "/usr/local/include",
-//                     "${workspaceFolder}/**",
-//                     "/home/eggy/Projects/JUCE/",
-//                     "/home/eggy/Projects/JUCE/modules/"
-//                 ]
-//             },
-//             "intelliSenseMode": "clang-x64",
-//             "compilerPath": "/usr/bin/gcc",
-//             "cStandard": "c11",
-//             "cppStandard": "c++17",
-//             "compileCommands": "${workspaceFolder}/cmake-build-debug/compile_commands.json",
-//             "configurationProvider": "ms-vscode.cmake-tools"
-//         }
-//     ],
-//     "version": 4
-// }
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
